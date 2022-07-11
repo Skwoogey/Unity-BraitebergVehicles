@@ -1,0 +1,159 @@
+--Scripts rundown
+
+MovableCamera
+
+	Allows to manipulate camera while in game. Use
+	scroll wheel to zoom in and out ond hold right
+	mouse button to drag camera around.
+	
+	PUBLIC PARAMETERS:
+	
+		Scroll Scale (float)
+		
+			Zooming coeficient. Denotes the change
+			of camera window size per each scroll.
+		
+
+MovableSun
+
+	A "Sun" layer object that you can move around
+	while in game by holding with left mouse
+	button and dragging around.
+
+Vehicle
+
+	Controls the car movement. Collects sensor
+	data and adjusts each wheel's speed. Performs
+	a movement after calculating speed.
+	
+	PUBLIC PARAMETERS:
+	
+		Default Accel (float)
+		
+			Default speed of each motor. Sensors
+			will adjust and increase it or
+			decrease it.
+			
+			NOTE: Acceleration can be negaitve.
+				  Car can go backwards and rotate
+				  in place.
+		
+		Left Accel (float)
+		
+			Current speed of left motor. It is
+			being recalculated each tick. Should 
+			be a private feild, but made public
+			for monitoring purposes.
+			
+		Right Accel (float)
+		
+			Current speed of right motor. It is
+			being recalculated each tick. Should 
+			be a private feild, but made public
+			for monitoring purposes.
+			
+		Body (Rigidbody2D)
+		
+			A "physical" body of the car. Made 
+			for inner workings of a car. Do not
+			change.
+			
+Sensor Pair
+
+	A pair of similar sensors at the front of the
+	car. Created to track and adjust both sensors
+	together.
+	
+	PUBLIC PARAMETERS:
+	
+		Left Sensor (GameObject)
+		
+			An object that tracks left sensor.
+			Made for inner workings of a car. Do
+			not change.
+			
+		Right Sensor (GameObject)
+		
+			An object that tracks right sensor.
+			Made for inner workings of a car. Do
+			not change.
+			
+		Stimul (LayerMask)
+		
+			Object layers that sensors in this
+			pairreact to. Can be multiple layers.
+		
+		FOV_Inner Angle (float)
+		
+			Angle in degrees that denotes inner
+			feild of view (FOV) boundary of each
+			sensor. Inner angle is measured from
+			the front-looking vector of a car.
+			
+		FOV_Outter Angle (float)
+		
+			Angle in degrees that denotes outter
+			feild of view (FOV) boundary of each
+			sensor. Outter angle is measured from
+			the front-looking vector of a car.
+			
+		Inverse Connection (bool)
+		
+			Whether sensors are connected to 
+			motors in parallel or or in 
+			crossed/inverse fashion. Each sensor
+			can control only one motor (I lazy).
+			
+		Connection weight (float)
+		
+			Overall modifier of sensor values.
+			Can create neagtive connections.
+			
+		Threshold (float),
+		Max Value (float),
+		Skewness (float)
+		
+			Variables of the formula that convert
+			the distance value between sensor and
+			stimul object to sensor value.
+			
+				SensorValue =
+					MaxValue / (1 + exp(Skewness * (Distance - Threshold)))
+					
+				Threshold
+					
+					A mid-point value.
+					Distance at which sensor is half
+					trigerred 
+					
+				Max Value
+				
+					Scale value of a sensor. Adjusts
+					how much sensor can change speed.
+					
+				Skewness
+				
+					changes skewness/smoothness of a
+					graph. At high values graph is
+					closer to digital reaction. At
+					lower values graph is closer to
+					linear reaction
+					
+SensorBase
+
+	Base class for sensors. non-functional by
+	itself.
+	
+Sensor Pos Distance
+
+	Sensor that tracks position point of stimul
+	objects. Does not care about object's size.
+	Sensor calculates the distance to closest
+	object.
+	
+Sensor Collider Distance
+
+	Sensor that tracks collider of stimul
+	objects. Stimul object must have a Collider2D
+	component. Sensor Calculates the distance to
+	closest object's collider.
